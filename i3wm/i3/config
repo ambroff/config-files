@@ -27,6 +27,13 @@ bindsym $mod+d exec dmenu_run
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
+# Passthrough mode to disable i3wm key bindings
+mode "pass-through" {
+    bindsym $mod+t mode "default"
+}
+
+bindsym $mod+t mode "pass-through"
+
 # Lock the screen
 bindsym $mod+l exec i3lock -c 000000
 
