@@ -193,6 +193,7 @@ exec --no-startup-id xrandr --dpi 150
 exec --no-startup-id xautolock -time 10 -locker i3lock
 exec --no-startup-id nm-applet
 exec --no-startup-id synergy
+exec --no-startup-id ibus-daemon --xim
 
 #exec emacs
 #exec gnome-terminal
