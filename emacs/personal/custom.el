@@ -43,6 +43,8 @@
  ;; If there is more than one, they won't work right.
  )
 
+(set-variable 'projectile-globally-ignored-directories '(".idea" ".ensime_cache" ".eunit" ".git" ".hg" ".fslckout" "_FOSSIL_" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" ".clangd"))
+
 ;; C++ dev setup
 (c-set-offset 'innamespace 0)
 
@@ -58,6 +60,9 @@
 
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package company-lsp :commands company-lsp)
+
+(define-key c-mode-base-map (kbd "M-/")
+  (function lsp-find-references))
 
 (company-mode t)
 (ido-mode t)
