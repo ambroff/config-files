@@ -61,8 +61,13 @@
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package company-lsp :commands company-lsp)
 
+;; (eval-after-load "c++-mode"
+;;   '(define-key c-mode-base-map (kbd "M-/")
+;;      (function lsp-find-references)))
+(require 'cc-mode)
 (define-key c-mode-base-map (kbd "M-/")
   (function lsp-find-references))
+
 
 (company-mode t)
 (ido-mode t)
