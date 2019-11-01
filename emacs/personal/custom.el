@@ -65,7 +65,7 @@
 ;;   '(define-key c-mode-base-map (kbd "M-/")
 ;;      (function lsp-find-references)))
 (require 'cc-mode)
-(define-key c-mode-base-map (kbd "M-/")
+(define-key c-mode-base-map (kbd "M-\")
   (function lsp-find-references))
 
 
