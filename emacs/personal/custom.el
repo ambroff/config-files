@@ -12,7 +12,7 @@
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (yaml-mode use-package lsp-ui yasnippet company-lsp lsp-mode cmake-mode exec-path-from-shell zop-to-char zenburn-theme which-key volatile-highlights undo-tree super-save smartrep smartparens operate-on-number move-text magit projectile imenu-anywhere hl-todo guru-mode gitignore-mode gitconfig-mode git-timemachine gist flycheck expand-region epl editorconfig easy-kill diminish diff-hl discover-my-major crux browse-kill-ring beacon anzu ace-window)))
+    (smart-tabs-mode lsp-treemacs lsp-python-ms yasnippet-lean yaml-mode use-package lsp-ui yasnippet company-lsp lsp-mode cmake-mode exec-path-from-shell zop-to-char zenburn-theme which-key volatile-highlights undo-tree super-save smartrep smartparens operate-on-number move-text magit projectile imenu-anywhere hl-todo guru-mode gitignore-mode gitconfig-mode git-timemachine gist flycheck expand-region epl editorconfig easy-kill diminish diff-hl discover-my-major crux browse-kill-ring beacon anzu ace-window)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
@@ -41,7 +41,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(lsp-face-highlight-read ((t (:inherit highlight :background "black" :foreground "white" :box nil :underline t))))
+ '(region ((t (:background "blue" :foreground "white")))))
 
 (set-variable 'projectile-globally-ignored-directories '(".idea" ".ensime_cache" ".eunit" ".git" ".hg" ".fslckout" "_FOSSIL_" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" ".clangd"))
 
@@ -54,6 +55,7 @@
 (use-package lsp-mode
   :hook (c++-mode . lsp)
   :hook (c-mode . lsp)
+  :hook (python-mode . lsp)
   :commands lsp
   :config
   (setq lsp-clients-clangd-args '("-j=2" "-background-index" "-log=error")))
@@ -65,7 +67,7 @@
 ;;   '(define-key c-mode-base-map (kbd "M-/")
 ;;      (function lsp-find-references)))
 (require 'cc-mode)
-(define-key c-mode-base-map (kbd "M-\")
+(define-key c-mode-base-map (kbd "M-\\")
   (function lsp-find-references))
 
 
@@ -73,3 +75,54 @@
 (ido-mode t)
 (show-paren-mode t)
 (setq global-hl-line-mode nil)
+(setq scroll-bar-mode nil)
+
+(global-set-key (kbd "<f5>") 'compile)
+
+;; Special config for Linux kernel source trees
+(defun c-lineup-arglist-tabs-only (ignored)
+  "Line up argument lists by tabs, not spaces"
+  (let* ((anchor (c-langelem-pos c-syntactic-element))
+         (column (c-langelem-2nd-pos c-syntactic-element))
+         (offset (- (1+ column) anchor))
+         (steps (floor offset c-basic-offset)))
+    (* (max steps 1)
+       c-basic-offset)))
+
+(dir-locals-set-class-variables
+ 'linux-kernel
+ '((c-mode . (
+              (c-basic-offset . 8)
+              (c-label-minimum-indentation . 0)
+              (c-offsets-alist . (
+                                  (arglist-close         . c-lineup-arglist-tabs-only)
+                                  (arglist-cont-nonempty .
+                                                         (c-lineup-gcc-asm-reg c-lineup-arglist-tabs-only))
+                                  (arglist-intro         . +)
+                                  (brace-list-intro      . +)
+                                  (c                     . c-lineup-C-comments)
+                                  (case-label            . 0)
+                                  (comment-intro         . c-lineup-comment)
+                                  (cpp-define-intro      . +)
+                                  (cpp-macro             . -1000)
+                                  (cpp-macro-cont        . +)
+                                  (defun-block-intro     . +)
+                                  (else-clause           . 0)
+                                  (func-decl-cont        . +)
+                                  (inclass               . +)
+                                  (inher-cont            . c-lineup-multi-inher)
+                                  (knr-argdecl-intro     . 0)
+                                  (label                 . -1000)
+                                  (statement             . 0)
+                                  (statement-block-intro . +)
+                                  (statement-case-intro  . +)
+                                  (statement-cont        . +)
+                                  (substatement          . +)
+                                  ))
+              (indent-tabs-mode . t)
+              (show-trailing-whitespace . t)
+              ))))
+
+(dir-locals-set-directory-class
+ (expand-file-name "~/code/linux")
+ 'linux-kernel)
