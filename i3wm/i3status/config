@@ -16,7 +16,14 @@ order += "battery 0"
 order += "load"
 order += "disk /"
 order += "disk /home"
+order += "volume"
 order += "tztime local"
+
+battery 0 {
+        format = "%status %percentage"
+        last_full_capacity = true
+        low_threshold = 20
+}
 
 cpu_usage {
         format = "%usage"
@@ -34,12 +41,8 @@ disk "/home" {
         format = "/home %avail"
 }
 
-battery 0 {
-        format = "%status %percentage %remaining"
-        path = "/sys/class/power_supply/BAT%d/uevent"
-        last_full_capacity = true
-        threshold_type = "time"
-        low_threshold = "20"
+volume {
+       format=
 }
 
 tztime local {
