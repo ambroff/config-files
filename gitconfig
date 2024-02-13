@@ -1,0 +1,19 @@
+[user]
+	email = kyle@ambroffkao.com
+	name = Kyle Ambroff-Kao
+	signingkey = 63BE1D311C906A57
+[core]
+	editor = emacsclient
+	abbrev = 12
+[pretty]
+	fixes = Fixes: %h (\"%s\")
+[pull]
+	ff = only
+[commit]
+	gpgsign = true
+[init]
+	defaultBranch = main
+[color]
+	ui = auto
+[alias]
+	superblame = blame -w -C -C -C
