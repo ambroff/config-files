@@ -17,3 +17,5 @@
 	ui = auto
 [alias]
 	superblame = blame -w -C -C -C
+[rerere]
+	enabled = true
